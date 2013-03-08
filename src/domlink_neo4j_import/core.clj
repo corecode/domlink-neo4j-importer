@@ -31,7 +31,7 @@
               [from to link-count] (s/split line #"\s+")
               [from-id names] (maybe-insert-node! from names)
               [to-id names] (maybe-insert-node! to names)]
-          (insert-rel! from-id to-id LINKS_TO {"count" link-count})
+          (insert-rel! from-id to-id LINKS_TO {"count" (Long/parseLong link-count)})
           (when lines
             (recur lines names)))))
     (.shutdown inserter)))
