@@ -24,15 +24,15 @@
                         new-map (assoc name-map name new-id)]
                     [new-id new-map]))))]
 
-      (->> (line-seq inf)
-           (reduce
-            (fn [names line]
-              (let [[from to link-count] (s/split line #"\s+")
-                    [from-id names] (maybe-insert-node! from names)
-                    [to-id names] (maybe-insert-node! to names)]
-                (insert-rel! from-id to-id LINKS_TO {"count" link-count})
-                names))
-            {})))
+      (loop [lines (line-seq inf)
+             names {}]
+        (let [[line & lines] lines
+              [from to link-count] (s/split line #"\s+")
+              [from-id names] (maybe-insert-node! from names)
+              [to-id names] (maybe-insert-node! to names)]
+          (insert-rel! from-id to-id LINKS_TO {"count" link-count})
+          (when lines
+            (recur lines names)))))
     (.shutdown inserter)))
 
 (defn -main
