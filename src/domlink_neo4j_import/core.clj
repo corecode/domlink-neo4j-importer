@@ -1,5 +1,6 @@
 (ns domlink-neo4j-import.core
-  (:require [clojure.string :as s])
+  (:require [clojure.string :as s]
+            [clojure.java.io :as io])
   (:import [org.neo4j.unsafe.batchinsert BatchInserters]
            [org.neo4j.graphdb DynamicRelationshipType])
   (:gen-class))
@@ -37,5 +38,5 @@
 
 (defn -main
   ([inname outname]
-     (with-open [inf (clojure.java.io/reader inname)]
+     (with-open [inf (io/reader inname)]
        (process-data inf outname))))
