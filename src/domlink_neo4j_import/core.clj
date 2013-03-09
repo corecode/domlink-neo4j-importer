@@ -37,6 +37,6 @@
     (.shutdown inserter)))
 
 (defn -main
-  ([inname outname]
-     (with-open [inf (io/reader inname)]
-       (process-data inf outname))))
+  [inname outname]
+  (with-open [inf (io/reader inname)]
+    (process-data inf outname)))
