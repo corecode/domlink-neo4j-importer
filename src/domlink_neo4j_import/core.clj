@@ -19,11 +19,11 @@
 
             (maybe-insert-node! [name name-map]
               (let [id (name-map name)]
-                (if id
-                  [id name-map]
-                  (let [new-id (insert-node! {"name" name})
-                        new-map (assoc name-map name new-id)]
-                    [new-id new-map]))))]
+                (if-not id
+                  ;; try again with updated map
+                  (recur name (assoc name-map
+                                name (insert-node! {"name" name})))
+                  [id name-map])))]
 
       (loop [lines (line-seq inf)
              names {}]
