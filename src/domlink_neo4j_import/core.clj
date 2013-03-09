@@ -18,12 +18,14 @@
               (.createRelationship inserter from to type props))
 
             (maybe-insert-node! [name name-map]
-              (let [id (name-map name)]
-                (if-not id
-                  ;; try again with updated map
-                  (recur name (assoc name-map
-                                name (insert-node! {"name" name})))
-                  [id name-map])))]
+              (let [id (name-map name)
+                    new-id (if id
+                             id
+                             (insert-node! {"name" name}))
+                    new-map (if id
+                              name-map
+                              (assoc name-map name new-id))]
+                [new-id new-map]))]
 
       (loop [lines (line-seq inf)
              names {}]
